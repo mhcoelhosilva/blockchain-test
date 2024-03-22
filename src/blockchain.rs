@@ -7,7 +7,7 @@ use sha2::{Sha256, Digest};
 use std::fmt::Write;
 use chrono::{DateTime, Utc, Local};
 
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Serialize)]
 struct Transaction {
     sender: String,
     receiver: String,
@@ -161,6 +161,8 @@ impl Chain {
             let hash = Chain::hash(header);
             // slice is the first difficulty characters in hash
             // algo is meant to make these equal to zero
+            // incrementing the nonce each time will change
+            // result of the hash function (in a "random" way)
             let slice = &hash[..header.difficulty as usize];
 
             match slice.parse::<u32>() {
