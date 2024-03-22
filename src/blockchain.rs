@@ -5,7 +5,7 @@ extern crate sha2;
 
 use sha2::{Sha256, Digest};
 use std::fmt::Write;
-use chrono::{DateTime, TimeZone, Utc, Local};
+use chrono::{DateTime, Utc, Local};
 
 #[derive(Debug, Clone, Serialize)]
 struct Transaction {
@@ -83,7 +83,7 @@ impl Chain {
     pub fn last_hash(&self) -> String {
         let block = match self.chain.last() {
             Some(block) => block,
-            // TODO: test that this is 48 zeros... shouldn't it be vec![0; 48] ?
+            // int 48 -> char '0'
             None => return String::from_utf8(vec![48; 64]).unwrap() // account for genesis block
         };
         Chain::hash(&block.header)
@@ -123,8 +123,7 @@ impl Chain {
         block.transactions.push(reward_trans);
         block.transactions.append(&mut self.curr_trans);
         block.count = block.transactions.len() as u32;
-        // TODO: can I get away with not using clone()?
-        block.header.merkle = Chain::get_merkle(block.transactions.clone());
+        block.header.merkle = Chain::get_merkle(&block.transactions);
         Chain::proof_of_work(&mut block.header);
 
         println!("{:#?}", &block);
@@ -132,10 +131,10 @@ impl Chain {
         true
     }
 
-    pub fn get_merkle(curr_trans: Vec<Transaction>) -> String {
+    pub fn get_merkle(curr_trans: &Vec<Transaction>) -> String {
         let mut merkle = Vec::new();
 
-        for t in &curr_trans {
+        for t in curr_trans {
             let hash = Chain::hash(t);
             merkle.push(hash);
         }
