@@ -13,12 +13,12 @@ fn main() {
     let mut choice = String::new();
 
     print!("Input a miner address...");
-    io::stdout().flush();
-    io::stdin().read_line(&mut miner_addr);
+    io::stdout().flush().unwrap();
+    io::stdin().read_line(&mut miner_addr).unwrap();
 
     print!("Input a mining difficulty...");
-    io::stdout().flush();
-    io::stdin().read_line(&mut difficulty);
+    io::stdout().flush().unwrap();
+    io::stdin().read_line(&mut difficulty).unwrap();
     let diff = difficulty.trim().parse::<u32>().expect("Difficulty must be an integer!");
 
     let mut chain = blockchain::Chain::new(miner_addr.trim().to_string(), diff);
@@ -31,9 +31,9 @@ fn main() {
         println!("4) Change Reward");
         println!("0) Exit");
         print!("Enter your choice:");
-        io::stdout().flush();
+        io::stdout().flush().unwrap();
         choice.clear();
-        io::stdin().read_line(&mut choice);
+        io::stdin().read_line(&mut choice).unwrap();
         println!("");
 
         match choice.trim().parse().unwrap() {
@@ -47,14 +47,14 @@ fn main() {
                 let mut amount = String::new();
 
                 print!("Enter sender address:");
-                io::stdout().flush();
-                io::stdin().read_line(&mut sender);
+                io::stdout().flush().unwrap();
+                io::stdin().read_line(&mut sender).unwrap();
                 print!("Enter receiver address: ");
-                io::stdout().flush();
-                io::stdin().read_line(&mut receiver);
+                io::stdout().flush().unwrap();
+                io::stdin().read_line(&mut receiver).unwrap();
                 print!("Enter amount: ");
-                io::stdout().flush();
-                io::stdin().read_line(&mut amount);
+                io::stdout().flush().unwrap();
+                io::stdin().read_line(&mut amount).unwrap();
 
                 let res = chain.new_transaction(
                     sender.trim().to_string(),
@@ -78,8 +78,8 @@ fn main() {
             3 => {
                 let mut new_diff = String::new();
                 print!("Enter new difficulty: ");
-                io::stdout().flush();
-                io::stdin().read_line(&mut new_diff);
+                io::stdout().flush().unwrap();
+                io::stdin().read_line(&mut new_diff).unwrap();
                 let res = chain.update_difficulty(new_diff.trim().parse().unwrap());
                 match res {
                     true => println!("Updated Difficulty"),
@@ -89,8 +89,8 @@ fn main() {
             4 => {
                 let mut new_reward = String::new();
                 print!("Enter new reward: ");
-                io::stdout().flush();
-                io::stdin().read_line(&mut new_reward);
+                io::stdout().flush().unwrap();
+                io::stdin().read_line(&mut new_reward).unwrap();
                 let res = chain.update_reward(new_reward.trim().parse().unwrap());
                 match res {
                     true => println!("Updated reward"),

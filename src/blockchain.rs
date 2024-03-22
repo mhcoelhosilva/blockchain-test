@@ -5,10 +5,10 @@ extern crate sha2;
 
 use sha2::{Sha256, Digest};
 use std::fmt::Write;
-use chrono::{DateTime, Utc, Local};
+use chrono::{Local};
 
 #[derive(Debug, Serialize)]
-struct Transaction {
+pub struct Transaction {
     sender: String,
     receiver: String,
     amount: f32,
